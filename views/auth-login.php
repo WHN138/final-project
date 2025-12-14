@@ -7,17 +7,17 @@
                 <div>
                     <div><a class="logo" href="index.php"><img class="img-fluid for-light" src="assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark" src="assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
                     <div class="login-main">
-                        <form class="theme-form">
+                        <form class="theme-form" action="../process/login-proses.php" method="POST">
                             <h4>Sign in to account</h4>
                             <p>Enter your email & password to login</p>
                             <div class="form-group">
                                 <label class="col-form-label">Email Address</label>
-                                <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                                <input class="form-control" type="email" name="email" required="" placeholder="Test@gmail.com">
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Password</label>
                                 <div class="form-input position-relative">
-                                    <input class="form-control" type="password" name="login[password]" required="" placeholder="*********">
+                                    <input class="form-control" type="password" name="password" required="" placeholder="*********">
                                     <div class="show-hide"><span class="show"> </span></div>
                                 </div>
                             </div>

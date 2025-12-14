@@ -9,28 +9,21 @@
                                 src="assets/images/logo/login.png" alt="looginpage"><img class="img-fluid for-dark"
                                 src="assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
                     <div class="login-main">
-                        <form class="theme-form">
                             <h4>Create your account</h4>
                             <p>Enter your personal details to create account</p>
+                            <form class="theme-form" action="../process/register-proses.php" method="POST">
                             <div class="form-group">
                                 <label class="col-form-label pt-0">Your Name</label>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <input class="form-control" type="text" required="" placeholder="First name">
-                                    </div>
-                                    <div class="col-6">
-                                        <input class="form-control" type="text" required="" placeholder="Last name">
-                                    </div>
-                                </div>
+                                        <input class="form-control" type="text" name="username" required="" placeholder="username">
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Email Address</label>
-                                <input class="form-control" type="email" required="" placeholder="Test@gmail.com">
+                                <input class="form-control" type="email" name="email" required="" placeholder="Test@gmail.com">
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Password</label>
                                 <div class="form-input position-relative">
-                                    <input class="form-control" type="password" name="login[password]" required=""
+                                    <input class="form-control" type="password" name="password" required=""
                                         placeholder="*********">
                                     <div class="show-hide"><span class="show"></span></div>
                                 </div>

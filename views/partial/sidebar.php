@@ -37,7 +37,7 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-search"></use>
               </svg><span>Cari Nutrisi </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="file-manager.php">
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="rekomendasi-makanan.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
               </svg>
@@ -45,7 +45,7 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
               </svg><span>Rekomendasi </span></a></li>
           <li class="sidebar-list">
-            <label class="badge badge-light-danger">Latest </label><a class="sidebar-link sidebar-title link-nav" href="kanban.php">
+            <label class="badge badge-light-danger">Latest </label><a class="sidebar-link sidebar-title link-nav" href="log-harian.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-bookmark"></use>
               </svg>
@@ -53,7 +53,7 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-bookmark"></use>
               </svg><span>Log Menu Harian </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="pola-makan.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
               </svg>
@@ -61,7 +61,7 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
               </svg><span>Pola Makan </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="analitik.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-charts"></use>
               </svg>

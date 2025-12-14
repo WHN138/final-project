@@ -6,7 +6,7 @@ class User
     public function __construct()
     {
         // path otomatis aman
-        include "app/config/database.php";
+        include __DIR__ . "/../config/database.php";
         $this->db = (new Database())->connect();
     }
 
@@ -23,7 +23,7 @@ class User
         return false;
     }
 
-    public function register($nama, $email, $password)
+    public function register($username, $email, $password)
     {
         // cek email sudah terdaftar
         $check = $this->db->prepare("SELECT * FROM users WHERE email=?");
@@ -37,12 +37,55 @@ class User
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         // insert user
-        $stmt = $this->db->prepare("INSERT INTO users (nama, email, password) VALUES (?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
 
-        if ($stmt->execute([$nama, $email, $hash])) {
+        if ($stmt->execute([$username, $email, $hash])) {
             return "success";
         }
 
         return "failed";
+    }
+
+    public function updateHealthData($id, $berat, $tinggi, $usia, $gender, $aktivitas)
+    {
+        $stmt = $this->db->prepare("UPDATE users SET berat_badan=?, tinggi_badan=?, usia=?, gender=?, level_aktivitas=? WHERE id=?");
+        if ($stmt->execute([$berat, $tinggi, $usia, $gender, $aktivitas, $id])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function calculateTDEE($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id=?");
+        $stmt->execute([$id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) return 0;
+
+        // Rumus Mifflin-St Jeor
+        // Pria: (10 x weight) + (6.25 x height) - (5 x age) + 5
+        // Wanita: (10 x weight) + (6.25 x height) - (5 x age) - 161
+
+        $bmr = 0;
+        if ($user['gender'] == 'L') {
+            $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) + 5;
+        } else {
+            $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) - 161;
+        }
+
+        // Multiplier aktivitas
+        $multipliers = [
+            'sedentary' => 1.2,
+            'light' => 1.375,
+            'moderate' => 1.55,
+            'active' => 1.725,
+            'very_active' => 1.9
+        ];
+
+        $activity = $user['level_aktivitas'] ?? 'sedentary';
+        $tdee = $bmr * ($multipliers[$activity] ?? 1.2);
+
+        return round($tdee);
     }
 }
