@@ -1,40 +1,29 @@
 <?php
 header('Content-Type: application/json');
 
-// Check if query is set
-if (!isset($_GET['query'])) {
-    echo json_encode(['error' => 'No query provided']);
-    exit;
-}
+require_once '../app/config/EnvLoader.php';
+require_once '../app/model/ApiClient.php';
 
-$query = urlencode($_GET['query']);
+try {
+    // Load Environment Variables
+    EnvLoader::load(__DIR__ . '/../.env');
 
-// User Instructions:
-// 1. Sign up at https://developer.edamam.com/edamam-nutrition-api
-// 2. Get your Application ID and Application Key
-// 3. Replace the values below:
+    // Check query
+    if (!isset($_GET['query'])) {
+        echo json_encode(['error' => 'No query provided']);
+        exit;
+    }
 
-$appId = 'd256b72e'; 
-$appKey = '3ca53b1a025d1f0e8ab435eccc6b1cab';
+    $query = $_GET['query'];
 
-// IMPORTANT: Do not share your API keys publicly.
+    // Instantiate Client and Fetch
+    $client = new ApiClient();
+    $response = $client->get($query);
 
-$url = "https://api.edamam.com/api/food-database/v2/parser?app_id={$appId}&app_key={$appKey}&ingr={$query}&nutrition-type=cooking";
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if (curl_errno($ch)) {
-    echo json_encode(['error' => 'Curl error: ' . curl_error($ch)]);
-} elseif ($httpCode !== 200) {
-     echo json_encode(['error' => 'API request failed with status ' . $httpCode, 'details' => json_decode($response)]);
-} else {
     echo $response;
-}
 
-curl_close($ch);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
+}
 ?>

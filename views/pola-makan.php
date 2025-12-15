@@ -23,7 +23,7 @@
                                 <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
                             </div>
                             <div class="card-body">
-                                <form action="../process/add-meal.php" method="POST">
+                                <form id="polaMakanForm">
                                     <div class="row">
                                         <div class="col-sm-6 col-md-6">
                                             <div class="mb-3">
@@ -104,7 +104,13 @@
                                         </div>
                                     </div>
                                     <div class="card-footer text-end pt-0 border-0">
-                                        <button class="btn btn-primary" type="submit">Simpan Data</button>
+                                        <button class="btn btn-primary" type="submit" id="submitPolaMakanBtn">
+                                            <span class="btn-text">Simpan Data</span>
+                                            <span class="btn-loading d-none">
+                                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Menyimpan...
+                                            </span>
+                                        </button>
                                         <button class="btn btn-light" type="reset">Batal</button>
                                     </div>
                                 </form>
@@ -121,4 +127,82 @@
 </div>
 
 <?php include('partial/scripts.php') ?>
+<script>
+    // Handle form submission with AJAX
+    document.getElementById('polaMakanForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitPolaMakanBtn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.classList.add('d-none');
+        btnLoading.classList.remove('d-none');
+        
+        // Prepare form data
+        const formData = new FormData(this);
+        
+        // Send AJAX request
+        fetch('../process/add-meal.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading state
+            submitBtn.disabled = false;
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            
+            if (data.success) {
+                // Reset form
+                document.getElementById('polaMakanForm').reset();
+                
+                // Show success popup
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message || 'Data makanan berhasil disimpan!',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Lihat Log Harian',
+                    showCancelButton: true,
+                    cancelButtonText: 'Input Lagi',
+                    confirmButtonColor: '#7366ff',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to log-harian.php
+                        window.location.href = 'log-harian.php';
+                    }
+                });
+            } else {
+                // Show error popup
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: data.message || 'Terjadi kesalahan saat menyimpan data.',
+                    confirmButtonColor: '#7366ff'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Hide loading state
+            submitBtn.disabled = false;
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            
+            // Show error popup
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan!',
+                text: 'Terjadi kesalahan jaringan. Silakan coba lagi.',
+                confirmButtonColor: '#7366ff'
+            });
+        });
+    });
+</script>
 <?php include('partial/footer-end.php') ?>

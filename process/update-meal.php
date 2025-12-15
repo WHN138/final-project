@@ -16,6 +16,7 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $logId = $_POST['log_id'] ?? '';
     $tanggal = $_POST['date'] ?? '';
     $waktuMakan = $_POST['meal_time'] ?? '';
     $foodName = trim($_POST['food_name'] ?? '');
@@ -24,34 +25,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fat = floatval($_POST['fat'] ?? 0);
     $carbs = floatval($_POST['carbs'] ?? 0);
 
-    if (empty($foodName) || empty($waktuMakan)) {
+    if (empty($logId) || empty($foodName) || empty($waktuMakan)) {
         echo json_encode([
             'success' => false,
-            'message' => 'Nama makanan dan waktu makan wajib diisi!'
+            'message' => 'Data tidak lengkap!'
         ]);
         exit;
     }
 
     $mealLog = new MealLog();
     
-    if ($mealLog->addManualLog($userId, $waktuMakan, $tanggal, $foodName, $calories, $protein, $fat, $carbs, 1)) {
-        // Get meal time label for better message
-        $mealTimeLabels = [
-            'pagi' => 'Sarapan (Pagi)',
-            'siang' => 'Makan Siang',
-            'malam' => 'Makan Malam',
-            'cemilan' => 'Cemilan'
-        ];
-        $mealLabel = $mealTimeLabels[$waktuMakan] ?? 'Log';
-        
+    if ($mealLog->updateLog($logId, $userId, $waktuMakan, $tanggal, $foodName, $calories, $protein, $fat, $carbs)) {
         echo json_encode([
             'success' => true,
-            'message' => "$foodName berhasil ditambahkan ke $mealLabel!"
+            'message' => 'Data makanan berhasil diupdate!'
         ]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Gagal menyimpan data. Silakan coba lagi.'
+            'message' => 'Gagal mengupdate data. Silakan coba lagi.'
         ]);
     }
 } else {

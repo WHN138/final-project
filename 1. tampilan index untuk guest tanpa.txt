@@ -1,0 +1,11 @@
+1. tampilan index untuk guest tanpa login untuk edukasi dan mengajak hidup sehat
+2. Register (ada bug)
+3. login (ada bug)
+4. dashboard user (Ringksan visual harian, status berjalan sudah makan pagi, siang, atau malam)
+5. CRUD halam cari nutrisi via API edamam bisa di tambahkan ke log makan harian
+6. log harian (tambah tombol sudah memakan makaan yang sudah user yang di cari di nutrisi tambakan ceklis ketika sudah di lakukan, delete jika tidak jadi makan)
+7. analitik (Pembadingan data analaitik haruan yang sudah dia makan apakah kurang, cukup, atau lebih tabhakan notifikasi)
+8. tambahkan tanggal untuk mecari data kemarin di log harian
+9. notifikasi 
+10. grafik tambakan tombol download ke csv
+11. admin (ringkasan total yang login berapa orang, total data makanan tercapai, ada log notifikasi terkirm atau tidak, reset pw, management pengguna)

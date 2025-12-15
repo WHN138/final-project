@@ -1,6 +1,6 @@
-<?php 
+<?php
 session_start();
-include('partial/header.php'); 
+include('partial/header.php');
 ?>
 <?php include('partial/loader.php') ?>
 
@@ -11,19 +11,33 @@ include('partial/header.php');
         border: none;
         overflow: hidden;
     }
+
     .small-widget:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
     }
+
     .small-widget .card-body {
         position: relative;
         z-index: 1;
     }
+
     /* Gradient Backgrounds for Widgets */
-    .bg-gradient-primary-soft { background: linear-gradient(135deg, #FFF5F7 0%, #FFF0F3 100%); }
-    .bg-gradient-secondary-soft { background: linear-gradient(135deg, #F3F0FF 0%, #EBE5FF 100%); }
-    .bg-gradient-success-soft { background: linear-gradient(135deg, #E8F5E9 0%, #E0F2F1 100%); }
-    .bg-gradient-warning-soft { background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%); }
+    .bg-gradient-primary-soft {
+        background: linear-gradient(135deg, #FFF5F7 0%, #FFF0F3 100%);
+    }
+
+    .bg-gradient-secondary-soft {
+        background: linear-gradient(135deg, #F3F0FF 0%, #EBE5FF 100%);
+    }
+
+    .bg-gradient-success-soft {
+        background: linear-gradient(135deg, #E8F5E9 0%, #E0F2F1 100%);
+    }
+
+    .bg-gradient-warning-soft {
+        background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%);
+    }
 
     .widget-icon-box {
         width: 50px;
@@ -51,10 +65,10 @@ include('partial/header.php');
             <!-- Container-fluid starts-->
             <div class="container-fluid">
                 <div class="row widget-grid">
-                    
+
                     <div class="col-xl-3 col-md-6 box-col-6">
                         <div class="card small-widget mb-4 shadow-sm">
-                            <div class="card-body bg-gradient-primary-soft"> 
+                            <div class="card-body bg-gradient-primary-soft">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Kalori Hari ini</span>
@@ -74,7 +88,7 @@ include('partial/header.php');
 
                     <div class="col-xl-3 col-md-6 box-col-6">
                         <div class="card small-widget mb-4 shadow-sm">
-                            <div class="card-body bg-gradient-secondary-soft"> 
+                            <div class="card-body bg-gradient-secondary-soft">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Target TDEE</span>
@@ -94,7 +108,7 @@ include('partial/header.php');
 
                     <div class="col-xl-3 col-md-6 box-col-6">
                         <div class="card small-widget mb-4 shadow-sm">
-                            <div class="card-body bg-gradient-success-soft"> 
+                            <div class="card-body bg-gradient-success-soft">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Protein (Hari Ini)</span>
@@ -112,7 +126,7 @@ include('partial/header.php');
 
                     <div class="col-xl-3 col-md-6 box-col-6">
                         <div class="card small-widget mb-4 shadow-sm">
-                            <div class="card-body bg-gradient-warning-soft"> 
+                            <div class="card-body bg-gradient-warning-soft">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Karbohidrat (Hari Ini)</span>

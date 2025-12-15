@@ -31,7 +31,8 @@ class MealLog
                          ml.calories,   
                          ml.protein, 
                          ml.fat, 
-                         ml.carbs
+                         ml.carbs,
+                         ml.status
                   FROM meal_logs ml
                   WHERE ml.user_id = ? AND ml.tanggal = ?
                   ORDER BY ml.waktu_makan ASC";
@@ -69,6 +70,21 @@ class MealLog
         // Pastikan hanya pemilik yang bisa hapus
         $stmt = $this->db->prepare("DELETE FROM meal_logs WHERE id=? AND user_id=?");
         if ($stmt->execute([$logId, $userId])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function updateStatus($logId, $userId, $status)
+    {
+        $stmt = $this->db->prepare("UPDATE meal_logs SET status = ? WHERE id = ? AND user_id = ?");
+        return $stmt->execute([$status, $logId, $userId]);
+    }
+
+    public function updateLog($logId, $userId, $waktuMakan, $tanggal, $foodName, $calories, $protein, $fat, $carbs)
+    {
+        $stmt = $this->db->prepare("UPDATE meal_logs SET waktu_makan = ?, tanggal = ?, food_name = ?, calories = ?, protein = ?, fat = ?, carbs = ? WHERE id = ? AND user_id = ?");
+        if ($stmt->execute([$waktuMakan, $tanggal, $foodName, $calories, $protein, $fat, $carbs, $logId, $userId])) {
             return true;
         }
         return false;
