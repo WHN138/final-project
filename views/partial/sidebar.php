@@ -61,13 +61,17 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
               </svg><span>Pola Makan </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="analitik.php">
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-charts"></use>
               </svg>
               <svg class="fill-icon">
                 <use href="../assets/svg/icon-sprite.svg#fill-charts"></use>
-              </svg><span>Analitik </span></a>
+              </svg><span>Grafik Summary</span></a>
+            <ul class="sidebar-submenu">
+              <li><a href="grafik-kalori.php">Grafik Kalori</a></li>
+              <li><a href="grafik-protein.php">Grafik Protein</a></li>
+            </ul>
           </li>
     </nav>
   </div>

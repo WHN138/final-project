@@ -219,9 +219,11 @@ include('partial/loader.php');
         <?php if (isset($_SESSION['error'])): ?>
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
+                title: 'Login Gagal',
                 text: '<?php echo $_SESSION['error']; ?>',
-                confirmButtonColor: '#d33'
+                confirmButtonColor: '#24695c',
+                background: '#fff',
+                iconColor: '#d33'
             });
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>

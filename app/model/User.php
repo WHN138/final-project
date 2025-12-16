@@ -88,4 +88,10 @@ class User
 
         return round($tdee);
     }
+    public function getUserById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

@@ -33,11 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $notificationService->sendNotification(
                 $userId,
                 $user['email'],
-                $user['name'],
+                $user['username'],
                 'Test Notification 🔔',
                 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!',
                 '/views/dashboard.php'
             );
+            
+            // Add debug info
+            $result['sent_to'] = $user['email'];
             
             echo json_encode($result);
             break;
@@ -48,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $notificationService->sendMealReminder(
                 $userId,
                 $user['email'],
-                $user['name'],
+                $user['username'],
                 $mealType
             );
             

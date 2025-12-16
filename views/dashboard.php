@@ -1,6 +1,39 @@
 <?php
 session_start();
 include('partial/header.php');
+require_once '../app/model/MealLog.php';
+
+$userId = $_SESSION['user_id'] ?? 0;
+$mealLog = new MealLog();
+
+// Get Today's Calories
+$todayCalories = $mealLog->getTodayCalories($userId);
+
+// Get Weekly Stats
+$weeklyStatsRaw = $mealLog->getWeeklyStats($userId);
+$targetTDEE = 2150; // Average daily calorie requirement
+
+// Prepare 7 days data for Chart
+$dates = [];
+$caloriesData = [];
+$targetData = [];
+
+for ($i = 6; $i >= 0; $i--) {
+    $date = date('Y-m-d', strtotime("-$i days"));
+    $dates[] = $date;
+    $found = false;
+    foreach ($weeklyStatsRaw as $stat) {
+        if ($stat['date'] == $date) {
+            $caloriesData[] = (int)$stat['total_calories'];
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        $caloriesData[] = 0;
+    }
+    $targetData[] = $targetTDEE;
+}
 ?>
 <?php include('partial/loader.php') ?>
 
@@ -73,12 +106,12 @@ include('partial/header.php');
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Kalori Hari ini</span>
                                         <div class="d-flex align-items-end gap-1 mt-2">
-                                            <h4 class="mb-0 text-primary">1000 kkal</h4>
+                                            <h4 class="mb-0 text-primary"><?php echo number_format($todayCalories); ?> kkal</h4>
                                         </div>
                                     </div>
                                     <div class="widget-icon-box bg-white shadow-sm text-primary">
                                         <svg class="stroke-icon" style="width: 24px; height: 24px;">
-                                            <use href="assets/svg/icon-sprite.svg#fill-fire"></use>
+                                            <use href="../assets/svg/icon-sprite.svg#fill-fire"></use>
                                         </svg>
                                     </div>
                                 </div>
@@ -93,12 +126,12 @@ include('partial/header.php');
                                     <div>
                                         <span class="f-light f-w-500 text-muted">Target TDEE</span>
                                         <div class="d-flex align-items-end gap-1 mt-2">
-                                            <h4 class="mb-0 text-secondary">1500 kkal</h4>
+                                            <h4 class="mb-0 text-secondary"><?php echo number_format($targetTDEE); ?> kkal</h4>
                                         </div>
                                     </div>
                                     <div class="widget-icon-box bg-white shadow-sm text-secondary">
                                         <svg class="stroke-icon" style="width: 24px; height: 24px;">
-                                            <use href="assets/svg/icon-sprite.svg#fill-target"></use>
+                                            <use href="../assets/svg/icon-sprite.svg#fill-target"></use>
                                         </svg>
                                     </div>
                                 </div>
@@ -216,19 +249,19 @@ include('partial/header.php');
         },
         series: [{
             name: 'Asupan Kalori (kkal)',
-            data: [31, 40, 28, 51, 42, 109, 100]
+            data: <?php echo json_encode($caloriesData); ?>
         }, {
-            name: 'Teget TDEE',
-            data: [11, 32, 45, 32, 34, 52, 41]
+            name: 'Target TDEE',
+            data: <?php echo json_encode($targetData); ?>
         }],
 
         xaxis: {
             type: 'datetime',
-            categories: ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00", "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00", "2018-09-19T06:30:00"],
+            categories: <?php echo json_encode($dates); ?>,
         },
         tooltip: {
             x: {
-                format: 'dd/MM/yy HH:mm'
+                format: 'dd MMM yyyy'
             },
         },
         colors: [CubaAdminConfig.primary, CubaAdminConfig.secondary],

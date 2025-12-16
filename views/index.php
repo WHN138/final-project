@@ -94,7 +94,7 @@
             <p class="lead mt-3">Mulai dari apa yang kamu makan hari ini. Kami bantu kamu melangkah perlahan menuju hidup lebih sehat.</p>
             <div class="mt-4">
               <a href="#healthy" class="btn btn-success btn-lg me-2">Pelajari Sekarang</a>
-              <a href="register.php" class="btn btn-outline-light btn-lg">Mulai Gratis</a>
+              <a href="auth-login.php" class="btn btn-outline-light btn-lg">Login</a>
             </div>
           </div>
         </div>

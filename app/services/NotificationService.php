@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../model/Notification.php';
 require_once __DIR__ . '/../helpers/PushNotificationHelper.php';
 require_once __DIR__ . '/../helpers/EmailNotificationHelper.php';
+require_once __DIR__ . '/../helpers/EnvLoader.php';
 
 class NotificationService
 {
@@ -11,6 +12,9 @@ class NotificationService
 
     public function __construct()
     {
+        // Load .env
+        EnvLoader::load(__DIR__ . '/../../.env');
+
         $this->notificationModel = new Notification();
         $this->pushHelper = new PushNotificationHelper();
         $this->emailHelper = new EmailNotificationHelper();
@@ -24,6 +28,7 @@ class NotificationService
         $settings = $this->notificationModel->getSettings($userId);
         $sent = false;
         $method = null;
+        $errors = [];
 
         // Try push notification first if enabled
         if ($settings['push_enabled']) {
@@ -33,6 +38,7 @@ class NotificationService
                 $method = 'push';
                 $this->notificationModel->logNotification($userId, 'push', $title, $message, 'sent');
             } else {
+                $errors['push'] = $pushResult['message'];
                 $this->notificationModel->logNotification($userId, 'push', $title, $message, 'failed', $pushResult['message']);
             }
         }
@@ -45,6 +51,7 @@ class NotificationService
                 $method = 'email';
                 $this->notificationModel->logNotification($userId, 'email', $title, $message, 'sent');
             } else {
+                $errors['email'] = $emailResult['message'];
                 $this->notificationModel->logNotification($userId, 'email', $title, $message, 'failed', $emailResult['message']);
             }
         }
@@ -52,7 +59,8 @@ class NotificationService
         return [
             'success' => $sent,
             'method' => $method,
-            'message' => $sent ? "Notification sent via $method" : 'All notification methods failed'
+            'message' => $sent ? "Notification sent via $method" : 'All notification methods failed',
+            'errors' => $errors
         ];
     }
 

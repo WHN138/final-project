@@ -89,4 +89,34 @@ class MealLog
         }
         return false;
     }
+
+    public function getMonthlyStats($userId, $month, $year)
+    {
+        $stmt = $this->db->prepare("SELECT DAY(tanggal) as day, SUM(calories) as total_calories, SUM(protein) as total_protein 
+                                  FROM meal_logs 
+                                  WHERE user_id = ? AND MONTH(tanggal) = ? AND YEAR(tanggal) = ? 
+                                  GROUP BY DAY(tanggal) 
+                                  ORDER BY DAY(tanggal) ASC");
+        $stmt->execute([$userId, $month, $year]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getWeeklyStats($userId)
+    {
+        $stmt = $this->db->prepare("SELECT DATE(tanggal) as date, SUM(calories) as total_calories 
+                                  FROM meal_logs 
+                                  WHERE user_id = ? AND tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) 
+                                  GROUP BY DATE(tanggal) 
+                                  ORDER BY date ASC");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTodayCalories($userId)
+    {
+        $stmt = $this->db->prepare("SELECT SUM(calories) as total_calories FROM meal_logs WHERE user_id = ? AND tanggal = CURDATE()");
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_calories'] ?? 0;
+    }
 }
