@@ -6,7 +6,9 @@ class User
     public function __construct()
     {
         // path otomatis aman
-        include __DIR__ . "/../config/database.php";
+        if (!class_exists('Database')) {
+            include __DIR__ . "/../config/database.php";
+        }
         $this->db = (new Database())->connect();
     }
 
@@ -67,31 +69,91 @@ class User
         // Pria: (10 x weight) + (6.25 x height) - (5 x age) + 5
         // Wanita: (10 x weight) + (6.25 x height) - (5 x age) - 161
 
-        $bmr = 0;
-        if ($user['gender'] == 'L') {
-            $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) + 5;
-        } else {
-            $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) - 161;
+    //     $bmr = 0;
+    //     if ($user['gender'] == 'L') {
+    //         $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) + 5;
+    //     } else {
+    //         $bmr = (10 * $user['berat_badan']) + (6.25 * $user['tinggi_badan']) - (5 * $user['usia']) - 161;
+    //     }
+
+    //     // Multiplier aktivitas
+    //     $multipliers = [
+    //         'sedentary' => 1.2,
+    //         'light' => 1.375,
+    //         'moderate' => 1.55,
+    //         'active' => 1.725,
+    //         'very_active' => 1.9
+    //     ];
+
+    //     $activity = $user['level_aktivitas'] ?? 'sedentary';
+    //     $tdee = $bmr * ($multipliers[$activity] ?? 1.2);
+
+    //     return round($tdee);
+    // }
+    // public function getUserById($id)
+    // {
+    //     $stmt = $this->db->prepare("SELECT * FROM users WHERE id=?");
+    //     $stmt->execute([$id]);
+    //     return $stmt->fetch(PDO::FETCH_ASSOC);
+    // }
+    }
+
+    public function getRecentUsers($limit = 5)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users ORDER BY id DESC LIMIT ?");
+        $stmt->bindParam(1, $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createAdmin($username, $email, $password, $nama)
+    {
+        // Check if email exists
+        $check = $this->db->prepare("SELECT * FROM users WHERE email=?");
+        $check->execute([$email]);
+        if ($check->rowCount() > 0) {
+            return "exists";
         }
 
-        // Multiplier aktivitas
-        $multipliers = [
-            'sedentary' => 1.2,
-            'light' => 1.375,
-            'moderate' => 1.55,
-            'active' => 1.725,
-            'very_active' => 1.9
-        ];
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $role = 'admin';
 
-        $activity = $user['level_aktivitas'] ?? 'sedentary';
-        $tdee = $bmr * ($multipliers[$activity] ?? 1.2);
-
-        return round($tdee);
+        $stmt = $this->db->prepare("INSERT INTO users (username, email, password, nama, role) VALUES (?, ?, ?, ?, ?)");
+        if ($stmt->execute([$username, $email, $hash, $nama, $role])) {
+            return "success";
+        }
+        return "failed";
     }
+
+    public function getAllUsersCount()
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM users");
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getAllUsers()
+    {
+        $stmt = $this->db->query("SELECT * FROM users ORDER BY id DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getUserById($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id=?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateUser($id, $username, $nama, $email, $role)
+    {
+        $stmt = $this->db->prepare("UPDATE users SET username=?, nama=?, email=?, role=? WHERE id=?");
+        return $stmt->execute([$username, $nama, $email, $role, $id]);
+    }
+
+    public function deleteUser($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id=?");
+        return $stmt->execute([$id]);
     }
 }

@@ -15,7 +15,7 @@
           <li class="sidebar-main-title">
           </li>
           <li class="sidebar-list">
-            <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" href="dashboard.php">
+            <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title link-nav" href="dashboard.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
               </svg>
@@ -29,7 +29,7 @@
             </div>
           </li>
           <li class="sidebar-list">
-            <label class="badge badge-light-secondary"></label><a class="sidebar-link sidebar-title" href="cari-nutrisi.php">
+            <label class="badge badge-light-secondary"></label><a class="sidebar-link sidebar-title link-nav" href="cari-nutrisi.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-search"></use>
               </svg>
@@ -37,13 +37,6 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-search"></use>
               </svg><span>Cari Nutrisi </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="rekomendasi-makanan.php">
-              <svg class="stroke-icon">
-                <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-              </svg>
-              <svg class="fill-icon">
-                <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-              </svg><span>Rekomendasi </span></a></li>
           <li class="sidebar-list">
             <label class="badge badge-light-danger">Latest </label><a class="sidebar-link sidebar-title link-nav" href="log-harian.php">
               <svg class="stroke-icon">
@@ -53,13 +46,21 @@
                 <use href="../assets/svg/icon-sprite.svg#fill-bookmark"></use>
               </svg><span>Log Menu Harian </span></a>
           </li>
-          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="pola-makan.php">
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="pola-makan.php">
               <svg class="stroke-icon">
                 <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
               </svg>
               <svg class="fill-icon">
                 <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
               </svg><span>Pola Makan </span></a>
+          </li>
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav" href="analitik.php">
+              <svg class="stroke-icon">
+                <use href="../assets/svg/icon-sprite.svg#stroke-charts"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="../assets/svg/icon-sprite.svg#fill-charts"></use>
+              </svg><span>Analitik </span></a>
           </li>
           <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
               <svg class="stroke-icon">

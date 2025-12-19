@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Des 2025 pada 12.21
+-- Waktu pembuatan: 17 Des 2025 pada 14.58
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -54,16 +54,110 @@ CREATE TABLE `meal_logs` (
   `protein` float DEFAULT 0,
   `fat` float DEFAULT 0,
   `carbs` float DEFAULT 0,
-  `porsi` int(11) NOT NULL
+  `porsi` int(11) NOT NULL,
+  `status` enum('planned','eaten') DEFAULT 'planned'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `meal_logs`
 --
 
-INSERT INTO `meal_logs` (`id`, `user_id`, `tanggal`, `waktu_makan`, `food_name`, `calories`, `protein`, `fat`, `carbs`, `porsi`) VALUES
-(1, 0, '2025-12-14', 'pagi', 'Nasi Sambal Ayam', 100, 100, 100, 100, 1),
-(2, 1, '2025-12-14', 'siang', 'Nasi Sambal Ayam', 100, 100, 100, 100, 1);
+INSERT INTO `meal_logs` (`id`, `user_id`, `tanggal`, `waktu_makan`, `food_name`, `calories`, `protein`, `fat`, `carbs`, `porsi`, `status`) VALUES
+(1, 0, '2025-12-14', 'pagi', 'Nasi Sambal Ayam', 100, 100, 100, 100, 1, 'planned'),
+(2, 1, '2025-12-14', 'siang', 'Nasi Sambal Ayam', 100, 100, 100, 100, 1, 'planned'),
+(3, 1, '2025-12-15', 'malam', 'Burger', 183, 14.2, 9, 11.5, 1, 'planned'),
+(4, 1, '2025-12-15', 'pagi', 'Nasi Uduk + telor balado', 100, 100, 100, 100, 1, 'planned');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `type` enum('push','email') NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('sent','failed','pending') DEFAULT 'pending',
+  `error_message` text DEFAULT NULL,
+  `sent_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `type`, `title`, `message`, `status`, `error_message`, `sent_at`, `created_at`) VALUES
+(1, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:24:04'),
+(2, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'Email failed: SMTP Error: Could not authenticate.', NULL, '2025-12-16 15:24:06'),
+(3, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:24:06'),
+(4, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'Email failed: SMTP Error: Could not authenticate.', NULL, '2025-12-16 15:24:09'),
+(5, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:24:29'),
+(6, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'Email failed: SMTP Error: Could not authenticate.', NULL, '2025-12-16 15:24:31'),
+(7, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:26:01'),
+(8, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'Email failed: SMTP Error: Could not authenticate.', NULL, '2025-12-16 15:26:03'),
+(9, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:28:23'),
+(10, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'Email failed: SMTP Error: Could not authenticate.', NULL, '2025-12-16 15:28:25'),
+(11, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:31:09'),
+(12, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:31:13', '2025-12-16 15:31:13'),
+(13, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:31:58'),
+(14, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:32:02', '2025-12-16 15:32:02'),
+(15, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:32:32'),
+(16, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:32:35', '2025-12-16 15:32:35'),
+(17, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:34:40'),
+(18, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:34:44', '2025-12-16 15:34:44'),
+(19, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:38:05'),
+(20, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:38:09', '2025-12-16 15:38:09'),
+(21, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-16 15:40:02'),
+(22, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-16 09:40:06', '2025-12-16 15:40:06'),
+(23, 1, 'push', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'failed', 'No push subscriptions found', NULL, '2025-12-17 13:31:08'),
+(24, 1, 'email', 'Test Notification 🔔', 'Ini adalah test notification dari Healthy App. Notifikasi Anda berfungsi dengan baik!', 'sent', NULL, '2025-12-17 07:31:12', '2025-12-17 13:31:12');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `notification_settings`
+--
+
+CREATE TABLE `notification_settings` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `push_enabled` tinyint(1) DEFAULT 1,
+  `email_enabled` tinyint(1) DEFAULT 1,
+  `reminder_breakfast` tinyint(1) DEFAULT 1,
+  `reminder_lunch` tinyint(1) DEFAULT 1,
+  `reminder_dinner` tinyint(1) DEFAULT 1,
+  `reminder_time_breakfast` time DEFAULT '07:00:00',
+  `reminder_time_lunch` time DEFAULT '12:00:00',
+  `reminder_time_dinner` time DEFAULT '18:00:00',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `notification_settings`
+--
+
+INSERT INTO `notification_settings` (`id`, `user_id`, `push_enabled`, `email_enabled`, `reminder_breakfast`, `reminder_lunch`, `reminder_dinner`, `reminder_time_breakfast`, `reminder_time_lunch`, `reminder_time_dinner`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 1, 1, '07:00:00', '12:00:00', '20:32:00', '2025-12-16 15:21:12', '2025-12-17 13:31:29');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `push_subscriptions`
+--
+
+CREATE TABLE `push_subscriptions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `endpoint` text NOT NULL,
+  `p256dh` varchar(255) NOT NULL,
+  `auth` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -104,7 +198,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `nama`, `umur`, `tinggi`, `berat`, `aktivitas`, `alergi`, `target_kalori`) VALUES
-(1, 'rivan124@gmail.com', 'Rivan wahyu risalah', '$2y$10$dB0ReDhZ1zUkXXueMjHXdOTyL2jrYCPgdEXHy7hYB.ptHTSURYDI2', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 'arifkurniawan1424@gmail.com', 'Rivan wahyu risalah', '$2y$10$dB0ReDhZ1zUkXXueMjHXdOTyL2jrYCPgdEXHy7hYB.ptHTSURYDI2', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -122,6 +216,27 @@ ALTER TABLE `makanan`
 ALTER TABLE `meal_logs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indeks untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indeks untuk tabel `notification_settings`
+--
+ALTER TABLE `notification_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
+-- Indeks untuk tabel `push_subscriptions`
+--
+ALTER TABLE `push_subscriptions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indeks untuk tabel `rekomendasi`
@@ -151,7 +266,25 @@ ALTER TABLE `makanan`
 -- AUTO_INCREMENT untuk tabel `meal_logs`
 --
 ALTER TABLE `meal_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT untuk tabel `notification_settings`
+--
+ALTER TABLE `notification_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `push_subscriptions`
+--
+ALTER TABLE `push_subscriptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `rekomendasi`
@@ -168,6 +301,24 @@ ALTER TABLE `users`
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
+
+--
+-- Ketidakleluasaan untuk tabel `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `notification_settings`
+--
+ALTER TABLE `notification_settings`
+  ADD CONSTRAINT `notification_settings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `push_subscriptions`
+--
+ALTER TABLE `push_subscriptions`
+  ADD CONSTRAINT `push_subscriptions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `rekomendasi`

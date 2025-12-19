@@ -11,6 +11,13 @@
  * * * * * * php /path/to/send-meal-reminders.php auto
  */
 
+// Set timezone
+date_default_timezone_set('Asia/Jakarta');
+
+// Display errors for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../app/model/Notification.php';
 require_once __DIR__ . '/../app/services/NotificationService.php';
 

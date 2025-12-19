@@ -6,7 +6,7 @@ class Notification
     public function __construct()
     {
         if (!class_exists('Database')) {
-            include "../app/config/database.php";
+            include __DIR__ . "/../config/database.php";
         }
         $this->db = (new Database())->connect();
     }
@@ -116,7 +116,7 @@ class Notification
         $enabledField = "reminder_" . $mealType;
         
         $stmt = $this->db->prepare("
-            SELECT ns.user_id, u.email, u.name 
+            SELECT ns.user_id, u.email, u.nama as name 
             FROM notification_settings ns
             JOIN users u ON ns.user_id = u.id
             WHERE ns.$enabledField = 1 
@@ -141,6 +141,12 @@ class Notification
     public function updateNotificationSettings($userId, $settings)
     {
         return $this->updateSettings($userId, $settings);
+    }
+
+    public function deleteNotificationSettingsByUserId($userId)
+    {
+        $stmt = $this->db->prepare("DELETE FROM notification_settings WHERE user_id = ?");
+        return $stmt->execute([$userId]);
     }
 }
 ?>

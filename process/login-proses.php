@@ -37,7 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'text' => 'Selamat datang kembali di Dashboard!'
         ];
 
-        header("Location: ../views/dashboard.php");
+        if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin') {
+            header("Location: ../views/dashboard-admin.php");
+        } else {
+            header("Location: ../views/dashboard.php");
+        }
         exit;
     } else {
         $_SESSION['error'] = "Email atau Password salah!";

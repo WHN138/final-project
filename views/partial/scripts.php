@@ -22,3 +22,73 @@
  <!-- Theme js-->
  <script src="../assets/js/script.js"></script>
  <!-- <script src="../assets/js/theme-customizer/customizer.js"></script> -->
+
+<script>
+    <?php if (isset($_SESSION['alert'])): ?>
+        Swal.fire({
+            icon: '<?php echo $_SESSION['alert']['icon']; ?>',
+            title: '<?php echo $_SESSION['alert']['title']; ?>',
+            text: '<?php echo $_SESSION['alert']['text']; ?>',
+            showConfirmButton: <?php echo isset($_SESSION['alert']['redirect']) ? 'true' : 'false'; ?>,
+            timer: <?php echo isset($_SESSION['alert']['redirect']) ? 'null' : '3000'; ?>,
+            timerProgressBar: <?php echo isset($_SESSION['alert']['redirect']) ? 'false' : 'true'; ?>,
+            toast: <?php echo isset($_SESSION['alert']['redirect']) ? 'false' : 'true'; ?>,
+            position: '<?php echo isset($_SESSION['alert']['redirect']) ? 'center' : 'top-end'; ?>'
+        }).then((result) => {
+            <?php if (isset($_SESSION['alert']['redirect'])): ?>
+                window.location.href = '<?php echo $_SESSION['alert']['redirect']; ?>';
+            <?php endif; ?>
+        });
+        <?php unset($_SESSION['alert']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '<?php echo $_SESSION['success']; ?>',
+        });
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '<?php echo $_SESSION['error']; ?>',
+        });
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    function logoutConfirm() {
+        Swal.fire({
+            title: 'Konfirmasi Logout',
+            text: "Apakah Anda yakin ingin keluar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Logout!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "../process/logout.php";
+            }
+        })
+    }
+
+    // Global Service Worker Registration
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        window.addEventListener('load', () => {
+            // Use dynamic path to handle different directory levels
+            const swPath = window.location.pathname.includes('/views/') ? '../sw.js' : 'sw.js';
+            navigator.serviceWorker.register(swPath)
+                .then(registration => {
+                    console.log('Service Worker registered successfully');
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        });
+    }
+</script>

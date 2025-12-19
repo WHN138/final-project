@@ -202,36 +202,6 @@ include('partial/loader.php');
     </div>
 
     <?php include('partial/scripts.php'); ?>
-    
-    <!-- SweetAlert Integration -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        <?php if (isset($_SESSION['success'])): ?>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: '<?php echo $_SESSION['success']; ?>',
-                confirmButtonColor: '#24695c',
-                background: '#fff',
-                iconColor: '#24695c'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'auth-login.php';
-                }
-            });
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['error'])): ?>
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '<?php echo $_SESSION['error']; ?>',
-                confirmButtonColor: '#d33'
-            });
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
-    </script>
 </div>
 
 <?php include('partial/footer-end.php'); ?>

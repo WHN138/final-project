@@ -328,18 +328,4 @@ for ($i = 6; $i >= 0; $i--) {
     // tempel legend ke div
     document.getElementById("chartLegend").innerHTML = myDoughnutChart.generateLegend();
 </script>
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php if (isset($_SESSION['alert'])): ?>
-    <script>
-        Swal.fire({
-            icon: '<?php echo $_SESSION['alert']['icon']; ?>',
-            title: '<?php echo $_SESSION['alert']['title']; ?>',
-            text: '<?php echo $_SESSION['alert']['text']; ?>',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        });
-    </script>
-    <?php unset($_SESSION['alert']); ?>
-<?php endif; ?>
 <?php include('partial/footer-end.php') ?>
